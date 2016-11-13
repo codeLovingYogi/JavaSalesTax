@@ -1,13 +1,14 @@
 import java.util.Scanner;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.List;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.math.BigDecimal;
 
 public class Transaction {
-	public static ArrayList<String> scanItems(String file) throws FileNotFoundException {
-		ArrayList<String> scannedItems = new ArrayList<String>();
+	public static List<String> scanItems(String file) throws FileNotFoundException {
+		List<String> scannedItems = new ArrayList<String>();
 		Scanner scan = new Scanner(new File(file)).useDelimiter("\\n");
 		while(scan.hasNext()) {
 			scannedItems.add(scan.next());
@@ -16,13 +17,13 @@ public class Transaction {
 		return(scannedItems);
 	}
 
-	public void getProductInfo(ArrayList<String> items) {
+	public void getProductInfo(List<String> items) {
 		for(String item: items) {
 			System.out.println(item);
 			int quantity;
 			boolean imported = false;
 			boolean exempt = false;
-			ArrayList<String> getProductName = new ArrayList<String>();
+			List<String> getProductName = new ArrayList<String>();
 			BigDecimal price = null;
 
 			String[] info = item.split("\\s+");
@@ -56,7 +57,7 @@ public class Transaction {
 		String file = "Input2.txt";
 		// String file = "Input3.txt";
 		Transaction t1 = new Transaction();
-		ArrayList<String> items = t1.scanItems(file);
+		List<String> items = t1.scanItems(file);
 		//System.out.println(items);
 		t1.getProductInfo(items);
 	}
@@ -87,7 +88,7 @@ class Product {
 
 class Tests {
 	public static void checkScanItems () throws FileNotFoundException {
-		ArrayList<String> expectedItems;
+		List<String> expectedItems;
 		int expectedInt;
 		// Contents of Input3.txt:
 		// 1 imported bottle of perfume at 27.99
