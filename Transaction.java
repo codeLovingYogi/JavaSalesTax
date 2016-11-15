@@ -60,10 +60,27 @@ public class Transaction {
 			System.out.println(price);
 			System.out.println(exempt);
 			System.out.println(imported);
-
-			Product product = new Product(name, price, exempt, imported);
-			this.transactionItems.add(product);
+			if(!exempt && imported) {
+				NonExemptImportItem txnItem = new NonExemptImportItem(quantity, name, price, exempt, imported);
+				txnItem.calculateTax();
+				this.transactionItems.add(txnItem);
+			} else if(!exempt) {
+				NonExemptItem txnItem = new NonExemptItem(quantity, name, price, exempt, imported);
+				txnItem.calculateTax();
+				this.transactionItems.add(txnItem);
+			} else if(imported) {
+				ImportItem txnItem = new ImportItem(quantity, name, price, exempt, imported);
+				txnItem.calculateTax();
+				this.transactionItems.add(txnItem);
+			} else {
+				TransactionItem txnItem = new TransactionItem(quantity, name, price, exempt, imported);
+				this.transactionItems.add(txnItem);
+			}
 		}
+	}
+
+	public void printReceipt() {
+		System.out.println("Printing receipt");
 	}
 
 	boolean isExempt(String name) {
@@ -93,6 +110,7 @@ public class Transaction {
 	public static void main (String[] args) throws FileNotFoundException {
 		Tests.checkTransaction();
 		Tests.checkProduct();
+		Tests.checkTransactionItem();
 		// String file = "Input1.txt";
 		String file = "Input2.txt";
 		// String file = "Input3.txt";
@@ -105,6 +123,7 @@ public class Transaction {
 		List<String> items = t1.scanItems(file);
 		//System.out.println(items);
 		t1.setTransactionItems(items);
+		t1.printReceipt();
 
 	}
 }
@@ -132,8 +151,66 @@ class Product {
 	}
 }
 
+class TransactionItem extends Product {
+	private int quantity;
+
+	public TransactionItem(int quantity, String name, BigDecimal price, boolean exempt, boolean imported) {
+		super(name, price, exempt, imported);
+		this.quantity = quantity;
+	}
+
+	public void setQuantity(int quantity) {
+		this.quantity = quantity;
+	}
+
+	public int getQuantity() {
+		return this.quantity;
+	}
+
+	public void calculateTaxes() {
+
+	}
+}
+
+class NonExemptItem extends TransactionItem implements TaxedItem {
+	public NonExemptItem(int quantity, String name, BigDecimal price, boolean exempt, boolean imported) {
+		super(quantity, name, price, exempt, imported);
+		System.out.println("NonExemptItem created");
+	}
+
+	public void calculateTax() {
+		System.out.println("Calculating sales tax");
+	}
+}
+
+class ImportItem extends TransactionItem implements TaxedItem {
+	public ImportItem(int quantity, String name, BigDecimal price, boolean exempt, boolean imported) {
+		super(quantity, name, price, exempt, imported);
+		System.out.println("ImportItem created");
+	}
+
+	public void calculateTax() {
+		System.out.println("Calculating import tax");
+	}
+}
+
+class NonExemptImportItem extends TransactionItem implements TaxedItem {
+	public NonExemptImportItem(int quantity, String name, BigDecimal price, boolean exempt, boolean imported) {
+		super(quantity, name, price, exempt, imported);
+		System.out.println("NonExemptImportItem created");
+	}
+
+	public void calculateTax() {
+		System.out.println("Calculating import and sales tax");
+	}
+}
+
+interface TaxedItem {
+	void calculateTax();
+}
+
 class Tests {
-	public static void checkTransaction () throws FileNotFoundException {
+	public static void checkTransaction() throws FileNotFoundException {
 		List<String> expectedItems;
 		String expectedItem;
 		int expectedInt;
@@ -150,32 +227,32 @@ class Tests {
 		List<String> scanned = testTransaction.scanItems(file);
 		expectedInt = 4;
 		if(scanned.size() != expectedInt) {
-			System.out.println("Failed test: scanItems - number of items, "
+			System.out.println("Failed test: Transaction, scanItems - number of items, "
 				+ "Expected: " + expectedInt + ", Actual: " + scanned.size());
 		}
 
 		expectedItems = new ArrayList<String>(
 			Arrays.asList("1 imported bottle of perfume at 27.99", "1 bottle of perfume at 18.99", "1 packet of headache pills at 9.75", "1 box of imported chocolates at 11.25"));
 		if(!testTransaction.scanItems(file).equals(expectedItems)) {
-			System.out.println("Failed test: scanItems - items, "
+			System.out.println("Failed test: Transaction, scanItems - items, "
 				+ "Expected: " + expectedItems + ", Actual: " + testTransaction.scanItems(file));
 		}
 
 		expectedItem = "New exempt item";
 		testTransaction.setExemptItem(expectedItem);
 		if(!testTransaction.getExemptItems().contains(expectedItem)) {
-			System.out.println("Failed test: setExemptItem, "
+			System.out.println("Failed test: Transaction, setExemptItem, "
 				+ "Expected: " + expectedItem + ", Actual: " + testTransaction.getExemptItems());
 		}
 
 		expectedBoolean = true;
 		if(testTransaction.isExempt("box of imported chocolates") != expectedBoolean) {
-			System.out.println("Failed test: isExempt, "
+			System.out.println("Failed test: Transaction, isExempt, "
 				+ "Expected: " + expectedBoolean + ", Actual: " + testTransaction.isExempt("box of imported chocolates"));
 		}
 
 		if(testTransaction.isImported("box of imported chocolates") != expectedBoolean) {
-			System.out.println("Failed test: isImported, "
+			System.out.println("Failed test: Transaction, isImported, "
 				+ "Expected: " + expectedBoolean + ", Actual: " + testTransaction.isImported("box of imported chocolates"));
 		}
 
@@ -190,13 +267,13 @@ class Tests {
 			// System.out.println(each.getPrice());
 		}
 		if(!sum.equals(expectedAmount)) {
-			System.out.println("Failed test: setTransactionItems, "
+			System.out.println("Failed test: Transaction, setTransactionItems, "
 				+ "Expected total: " + expectedAmount + ", Actual: " + sum);
 		}
 		// System.out.println(sum);
 	}
 
-	public static void checkProduct () {
+	public static void checkProduct() {
 		String expectedString;
 		BigDecimal expectedPrice;
 		// Product:
@@ -204,13 +281,31 @@ class Tests {
 		Product testProduct = new Product("imported bottle of perfume", new BigDecimal("54.65"), false, true);
 		expectedString = "imported bottle of perfume";
 		if(!testProduct.getName().equals(expectedString)) {
-			System.out.println("Failed test: getProductInfo - name, "
+			System.out.println("Failed test: Product, getName, "
 				+ "Expected: " + expectedString + ", Actual: " + testProduct.getName());
 		}
 		expectedPrice = new BigDecimal("54.65");
 		if(!testProduct.getPrice().equals(expectedPrice)) {
-			System.out.println("Failed test: getProductInfo - price, "
+			System.out.println("Failed test: Product, getPrice, "
 				+ "Expected: " + expectedPrice + ", Actual: " + testProduct.getPrice());
+		}
+	}
+
+	public static void checkTransactionItem() {
+		String expectedString;
+		int expectedInt;
+
+		TransactionItem testTxnItem = new TransactionItem(2, "imported bottle of perfume", new BigDecimal("54.65"), false, true);
+		expectedInt = 2;
+		if(testTxnItem.getQuantity() != (expectedInt)) {
+			System.out.println("Failed test: TransactionItem, getQuantity, "
+				+ "Expected: " + expectedInt + ", Actual: " + testTxnItem.getQuantity());
+		}
+
+		expectedString = "imported bottle of perfume";
+		if(!testTxnItem.getName().equals(expectedString)) {
+			System.out.println("Failed test: TransactionItem, getName, "
+				+ "Expected: " + expectedString + ", Actual: " + testTxnItem.getName());
 		}
 	}
 }
