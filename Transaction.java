@@ -8,12 +8,8 @@ import java.math.BigDecimal;
 
 public class Transaction {
 	private List<Product> transactionItems = new ArrayList<Product>();
-	// self.tax_rates = TaxRates(basic_tax, import_tax)
 	private List<String> exemptItems = new ArrayList<String>(
 					Arrays.asList("book", "chocolate", "pills"));
-	// self.sales_taxes = 0
-	// self.import_taxes = 0
-	// self.subtotal = 0
 
 	public static List<String> scanItems(String file) throws FileNotFoundException {
 		List<String> scannedItems = new ArrayList<String>();
@@ -55,11 +51,11 @@ public class Transaction {
 			String name = String.join(" ", getProductName);
 			exempt = this.isExempt(name);
 			imported = this.isImported(name);
-			System.out.println(quantity);
-			System.out.println(name);
-			System.out.println(price);
-			System.out.println(exempt);
-			System.out.println(imported);
+			// System.out.println(quantity);
+			// System.out.println(name);
+			// System.out.println(price);
+			// System.out.println(exempt);
+			// System.out.println(imported);
 			if(!exempt && imported) {
 				NonExemptImportItem txnItem = new NonExemptImportItem(quantity, name, price, exempt, imported);
 				txnItem.calculateTax();
@@ -72,7 +68,7 @@ public class Transaction {
 				ImportItem txnItem = new ImportItem(quantity, name, price, exempt, imported);
 				txnItem.calculateTax();
 				this.transactionItems.add(txnItem);
-			} else {
+			} else if(exempt){
 				TransactionItem txnItem = new TransactionItem(quantity, name, price, exempt, imported);
 				this.transactionItems.add(txnItem);
 			}
@@ -81,6 +77,11 @@ public class Transaction {
 
 	public void printReceipt() {
 		System.out.println("Printing receipt");
+		Receipt receipt = new Receipt(this.transactionItems);
+		for(Product item: this.transactionItems) {
+			//System.out.println("testing");
+			// System.out.println(item.getQuantity());
+		}
 	}
 
 	boolean isExempt(String name) {
@@ -108,9 +109,9 @@ public class Transaction {
 	}
 
 	public static void main (String[] args) throws FileNotFoundException {
-		Tests.checkTransaction();
-		Tests.checkProduct();
-		Tests.checkTransactionItem();
+		// Tests.checkTransaction();
+		// Tests.checkProduct();
+		// Tests.checkTransactionItem();
 		// String file = "Input1.txt";
 		String file = "Input2.txt";
 		// String file = "Input3.txt";
@@ -153,6 +154,7 @@ class Product {
 
 class TransactionItem extends Product {
 	private int quantity;
+	private BigDecimal subtotal;
 
 	public TransactionItem(int quantity, String name, BigDecimal price, boolean exempt, boolean imported) {
 		super(name, price, exempt, imported);
@@ -167,46 +169,132 @@ class TransactionItem extends Product {
 		return this.quantity;
 	}
 
-	public void calculateTaxes() {
-
+	public BigDecimal setSubtotal() {
+		subtotal = this.getPrice().multiply(new BigDecimal(this.getQuantity()));
+		return subtotal;
 	}
 }
 
 class NonExemptItem extends TransactionItem implements TaxedItem {
+
+	private BigDecimal taxTotal;
+	private BigDecimal subtotal;
+
 	public NonExemptItem(int quantity, String name, BigDecimal price, boolean exempt, boolean imported) {
 		super(quantity, name, price, exempt, imported);
 		System.out.println("NonExemptItem created");
 	}
 
 	public void calculateTax() {
-		System.out.println("Calculating sales tax");
+		BigDecimal salesTax;
+		//System.out.println("Calculating sales tax");
+		this.subtotal = this.setSubtotal();
+		TaxRates tax = new TaxRates();
+		salesTax = this.subtotal.multiply(new BigDecimal(tax.getBasicTax())).divide(new BigDecimal(100));
+		this.taxTotal = salesTax;
+		System.out.println(this.getName());	
+		System.out.println(this.getPrice());		
+		System.out.println("tax: " + this.taxTotal);
 	}
 }
 
 class ImportItem extends TransactionItem implements TaxedItem {
+
+	private BigDecimal taxTotal;
+	private BigDecimal subtotal;
+
 	public ImportItem(int quantity, String name, BigDecimal price, boolean exempt, boolean imported) {
 		super(quantity, name, price, exempt, imported);
 		System.out.println("ImportItem created");
 	}
 
 	public void calculateTax() {
-		System.out.println("Calculating import tax");
+		BigDecimal importTax;
+		//System.out.println("Calculating import tax");
+		this.subtotal = this.setSubtotal();
+		TaxRates tax = new TaxRates();
+		importTax = this.subtotal.multiply(new BigDecimal(tax.getImportTax())).divide(new BigDecimal(100));
+		this.taxTotal = importTax;
+		System.out.println(this.getName());	
+		System.out.println(this.getPrice());		
+		System.out.println("tax: " + this.taxTotal);
 	}
 }
 
 class NonExemptImportItem extends TransactionItem implements TaxedItem {
+
+	private BigDecimal taxTotal;
+	private BigDecimal subtotal;
+
 	public NonExemptImportItem(int quantity, String name, BigDecimal price, boolean exempt, boolean imported) {
 		super(quantity, name, price, exempt, imported);
 		System.out.println("NonExemptImportItem created");
 	}
 
 	public void calculateTax() {
-		System.out.println("Calculating import and sales tax");
+		BigDecimal salesTax;
+		BigDecimal importTax;
+		//System.out.println("Calculating import and sales tax");
+		this.subtotal = this.setSubtotal();
+		TaxRates tax = new TaxRates();
+		salesTax = this.subtotal.multiply(new BigDecimal(tax.getBasicTax())).divide(new BigDecimal(100));
+		importTax = this.subtotal.multiply(new BigDecimal(tax.getImportTax())).divide(new BigDecimal(100));
+		this.taxTotal = salesTax.add(importTax);
+		System.out.println(this.getName());	
+		System.out.println(this.getPrice());		
+		System.out.println("tax: " + this.taxTotal);		
 	}
 }
 
 interface TaxedItem {
 	void calculateTax();
+}
+
+class Receipt {
+	private TaxRates taxRates = new TaxRates();
+	private List<Product> items = new ArrayList<Product>();
+	private BigDecimal totalSalesTax;
+	private BigDecimal totalImportTax;;
+	private BigDecimal subtotal;
+
+	public Receipt(List<Product> items) {
+		this.items = items;
+		for(Product item: items){
+			//System.out.println(item.getName());
+			// System.out.println(item.getQuantity());
+			//System.out.println(item.getPrice());
+			//System.out.println(item.calculateTax());
+
+
+		}
+		System.out.println("in receipt");
+	}
+}
+
+class TaxRates {
+	private double basicTax;
+	private double importTax;
+
+	public TaxRates() {
+		this.basicTax = 10.0;
+		this.importTax = 5.0;
+	}
+
+	public void setBasicTax(double percent) {
+		this.basicTax = percent;
+	}
+
+	public void setImportTax(double percent) {
+		this.importTax = percent;
+	}
+
+	public double getBasicTax() {
+		return this.basicTax;
+	}
+
+	public double getImportTax() {
+		return this.importTax;
+	}
 }
 
 class Tests {
