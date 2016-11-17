@@ -30,7 +30,6 @@ public class Receipt {
 		}
 	}
 
-
 	public void setTotalSalesTax() {
 		for(Product item: this.items){
 			if (item instanceof NonExemptItem) {
@@ -64,6 +63,9 @@ public class Receipt {
 		BigDecimal amount;
 		BigDecimal amount_rounded;
 		double centss;
+
+		this.setReceiptSubtotal();
+		this.setTotalTransactionTax();
 
 		for(Product item: this.items) {
 			if (item instanceof ImportItem) {
