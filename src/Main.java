@@ -12,8 +12,8 @@ class Main {
 		// Tests.checkProduct();
 		// Tests.checkTransactionItem();
 		// String file = "Input1.txt";
-		String file = "Input2.txt";
-		// String file = "Input3.txt";
+		//String file = "Input2.txt";
+		String file = "Input3.txt";
 		Transaction t1 = new Transaction();
 		// t1.setExemptItem("test");
 		// System.out.println(t1.getExemptItems());

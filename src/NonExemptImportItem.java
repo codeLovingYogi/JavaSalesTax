@@ -22,6 +22,8 @@ public class NonExemptImportItem extends TransactionItem implements TaxedItem {
 	public void setSalesTax() {
 		//System.out.println("Calculating import and sales tax");
 		this.salesTax = this.getSubtotal().multiply(new BigDecimal(tax.getBasicTax())).divide(new BigDecimal(100));	
+		// System.out.println(this.salesTax);
+		// this.salesTax = this.salesTax.setScale(2, BigDecimal.ROUND_HALF_UP);
 	}
 
 	public void setImportTax() {

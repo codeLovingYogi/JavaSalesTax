@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 public class Receipt {
 	private TaxRates taxRates = new TaxRates();
@@ -20,16 +21,16 @@ public class Receipt {
 
 	public void setTotalSalesTax() {
 		for(Product item: this.items){
-			// if (item instanceof NonExemptItem) {
-			// 	((NonExemptItem)item).setTaxTotal();
-			// 	this.totalSalesTax = this.totalSalesTax.add(((NonExemptItem)item).getTaxTotal());
-			// }
-			// if (item instanceof NonExemptImportItem) {
-			// 	((NonExemptImportItem)item).setTaxTotal();
-			// 	this.totalSalesTax = this.totalSalesTax.add(((NonExemptImportItem)item).getSalesTax());
-			// }
-			item.setTaxTotal();
-			this.totalSalesTax = this.totalSalesTax.add(item.getTaxTotal());
+			if (item instanceof NonExemptItem) {
+				((NonExemptItem)item).setTaxTotal();
+				this.totalSalesTax = this.totalSalesTax.add(((NonExemptItem)item).getTaxTotal());
+			}
+			if (item instanceof NonExemptImportItem) {
+				((NonExemptImportItem)item).setTaxTotal();
+				this.totalSalesTax = this.totalSalesTax.add(((NonExemptImportItem)item).getSalesTax());
+			}
+			// item.setTaxTotal();
+			// this.totalSalesTax = this.totalSalesTax.add(item.getTaxTotal());
 		}
 		System.out.println("sales tax total" + this.getTotalSalesTax());
 
@@ -63,30 +64,52 @@ public class Receipt {
 
 	public void printReceipt() {
 		System.out.println("Printing receipt");
+		BigDecimal amount;
+		BigDecimal amount_rounded;
+		double centss;
+
 		for(Product item: this.items) {
-			System.out.println(item.getName());
 			if (item instanceof ImportItem) {
-				System.out.println(((ImportItem)item).getQuantity());
-				System.out.println(((ImportItem)item).getSubtotal());
-				System.out.println(((ImportItem)item).getTaxTotal());
+				amount = ((ImportItem)item).getSubtotal().add(((ImportItem)item).getTaxTotal());
+				amount = amount.setScale(4, BigDecimal.ROUND_HALF_UP);
+				// cents = amount.setScale(4, RoundingMode.CEILING);
+				amount_rounded = amount.multiply(new BigDecimal(0.05));
+				amount_rounded = amount_rounded.divide(new BigDecimal(5));
+				amount_rounded = amount_rounded.setScale(2, RoundingMode.CEILING);
+				amount_rounded = amount_rounded.multiply(new BigDecimal(5));
+				amount_rounded = amount_rounded.add(((ImportItem)item).getSubtotal());
 
+				// cents = Math.ceil(amount.multiply(new BigDecimal(0.05)));
+
+				System.out.println(amount_rounded);
+				System.out.println(((ImportItem)item).getQuantity() + " "
+					+ item.getName() + ": "
+					+ amount);
 			}
-			if (item instanceof NonExemptItem) {
-				System.out.println(((NonExemptItem)item).getQuantity());
-				System.out.println(((NonExemptItem)item).getSubtotal());
-				System.out.println(((NonExemptItem)item).getTaxTotal());
-
+			else if (item instanceof NonExemptItem) {
+				amount = ((NonExemptItem)item).getSubtotal().add(((NonExemptItem)item).getTaxTotal());
+				amount = amount.setScale(2, BigDecimal.ROUND_HALF_UP);
+				System.out.println(((NonExemptItem)item).getQuantity() + " "
+					+ item.getName() + ": "
+					+ amount);
 			}
-			if (item instanceof NonExemptImportItem) {
-				System.out.println(((NonExemptImportItem)item).getQuantity());
-				System.out.println(((NonExemptImportItem)item).getSubtotal());
-				System.out.println(((NonExemptImportItem)item).getTaxTotal());
-
+			else if (item instanceof NonExemptImportItem) {
+				amount = ((NonExemptImportItem)item).getSubtotal().add(((NonExemptImportItem)item).getTaxTotal());
+				amount = amount.setScale(2, BigDecimal.ROUND_HALF_UP);
+				System.out.println(((NonExemptImportItem)item).getQuantity() + " "
+					+ item.getName() + ": "
+					+ amount);
+			} 
+			else {
+				System.out.println(((TransactionItem)item).getQuantity() + " "
+					+ item.getName() + ": "
+					+ ((TransactionItem)item).getSubtotal());;
 			}
 		}
-		System.out.println(this.getReceiptSubtotal());
-		System.out.println(this.getTotalSalesTax());
-		System.out.println(this.getTotalImportTax());
+		BigDecimal salesTax = this.getTotalSalesTax().add(this.getTotalImportTax());
+		System.out.println("Sales Taxes: " + salesTax);
+		BigDecimal total = this.getTotalSalesTax().add(this.getTotalImportTax()).add(this.getReceiptSubtotal());
+		System.out.println("Total: " + total);
 	}
 
 	public BigDecimal getTotalSalesTax() {
