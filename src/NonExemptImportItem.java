@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 public class NonExemptImportItem extends TransactionItem implements TaxedItem {
 
@@ -22,7 +23,18 @@ public class NonExemptImportItem extends TransactionItem implements TaxedItem {
 	public void setSalesTax() {
 		//System.out.println("Calculating import and sales tax");
 		this.salesTax = this.getSubtotal().multiply(new BigDecimal(tax.getBasicTax())).divide(new BigDecimal(100));	
-		// System.out.println(this.salesTax);
+		
+		// BigDecimal roundedTax = this.salesTax;
+		// //System.out.println(roundedTax);
+
+		// roundedTax = roundedTax.multiply(new BigDecimal(0.05));
+		// roundedTax = roundedTax.divide(new BigDecimal(5));
+		// roundedTax = roundedTax.setScale(2, RoundingMode.CEILING);
+		// roundedTax = roundedTax.multiply(new BigDecimal(5));
+		// System.out.println("rounded: " + roundedTax);
+
+		// this.salesTax = roundedTax;
+		// System.out.println("sales tax from nei item" + this.salesTax);
 		// this.salesTax = this.salesTax.setScale(2, BigDecimal.ROUND_HALF_UP);
 	}
 

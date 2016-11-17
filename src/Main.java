@@ -11,25 +11,38 @@ class Main {
 		// Tests.checkTransaction();
 		// Tests.checkProduct();
 		// Tests.checkTransactionItem();
-		// String file = "Input1.txt";
-		//String file = "Input2.txt";
-		String file = "Input3.txt";
+		String file = "Input1.txt";
+		String file2 = "Input2.txt";
+		String file3 = "Input3.txt";
 		Transaction t1 = new Transaction();
-		// t1.setExemptItem("test");
-		// System.out.println(t1.getExemptItems());
-
-		// t1.setExemptItem("book");
-		// t1.setExemptItem("book");
+		System.out.println("Printing receipt for Input 1:");
 		List<String> items = t1.scanItems(file);
-		//System.out.println(items);
 		t1.setTransactionItems(items);
-		//t1.printReceipt();
-		//System.out.println("Printing receipt");
-		Receipt receipt = new Receipt(t1.getTransactionItems());
-		receipt.setReceiptSubtotal();
-		receipt.setTotalSalesTax();
-		receipt.setTotalImportTax();
-		receipt.printReceipt();
+		Receipt receipt1 = new Receipt(t1.getTransactionItems());
+		receipt1.setReceiptSubtotal();
+		receipt1.setTotalSalesTax();
+		receipt1.setTotalImportTax();
+		receipt1.printReceipt();
+		System.out.println("***************************");
+		Transaction t2 = new Transaction();
+		System.out.println("Printing receipt for Input 2:");
+		List<String> items2 = t2.scanItems(file2);
+		t2.setTransactionItems(items2);
+		Receipt receipt2 = new Receipt(t2.getTransactionItems());
+		receipt2.setReceiptSubtotal();
+		receipt2.setTotalSalesTax();
+		receipt2.setTotalImportTax();
+		receipt2.printReceipt();
+		System.out.println("***************************");
+		Transaction t3 = new Transaction();
+		System.out.println("Printing receipt for Input 3:");
+		List<String> items3 = t3.scanItems(file3);
+		t3.setTransactionItems(items3);
+		Receipt receipt3 = new Receipt(t3.getTransactionItems());
+		receipt3.setReceiptSubtotal();
+		receipt3.setTotalSalesTax();
+		receipt3.setTotalImportTax();
+		receipt3.printReceipt();
 	}
 }
 
