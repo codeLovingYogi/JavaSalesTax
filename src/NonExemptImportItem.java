@@ -1,6 +1,6 @@
 import java.math.BigDecimal;
 
-public class NonExemptImportItem extends TransactionItem implements TaxedItem {
+public class NonExemptImportItem extends TransactionItem implements TaxedSalesItem, TaxedImportItem {
 
 	private BigDecimal salesTax;
 	private BigDecimal importTax;

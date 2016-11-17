@@ -1,4 +1,5 @@
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 public class TransactionItem extends Product {
 	private int quantity;
@@ -11,15 +12,14 @@ public class TransactionItem extends Product {
 
 	public BigDecimal roundTotal(BigDecimal totalAmount) {
 		BigDecimal amount_rounded;
+
 		amount_rounded = new BigDecimal(Math.ceil(totalAmount.doubleValue() * 20) / 20);
+		amount_rounded = amount_rounded.divide(new BigDecimal(0.05), 0, RoundingMode.UP);
+		amount_rounded = amount_rounded.multiply(new BigDecimal(0.05));
+		amount_rounded = amount_rounded.setScale(2, RoundingMode.DOWN);
+		// Rounding using doubles:
+		// amount_rounded = new BigDecimal(Math.ceil(totalAmount.doubleValue() * 20) / 20);
 		return amount_rounded;
-		// amount_rounded = new BigDecimal(Math.ceil(this.taxTotal.doubleValue() * 20) / 20);
-		// amount_rounded = this.taxTotal.multiply(new BigDecimal(20));
-				// amount_rounded = amount_rounded.divide(new BigDecimal(20));
-
-		// amount_rounded = amount_rounded.setScale(2, RoundingMode.CEILING);
-		// amount_rounded.setScale(2, RoundingMode.HALF_UP);
-
 	}
 
 	public void setQuantity(int quantity) {
