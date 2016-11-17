@@ -20,8 +20,7 @@ class Main {
 		t1.setTransactionItems(items);
 		Receipt receipt1 = new Receipt(t1.getTransactionItems());
 		receipt1.setReceiptSubtotal();
-		receipt1.setTotalSalesTax();
-		receipt1.setTotalImportTax();
+		receipt1.setTotalTransactionTax();
 		receipt1.printReceipt();
 		System.out.println("***************************");
 		Transaction t2 = new Transaction();
@@ -30,8 +29,7 @@ class Main {
 		t2.setTransactionItems(items2);
 		Receipt receipt2 = new Receipt(t2.getTransactionItems());
 		receipt2.setReceiptSubtotal();
-		receipt2.setTotalSalesTax();
-		receipt2.setTotalImportTax();
+		receipt2.setTotalTransactionTax();
 		receipt2.printReceipt();
 		System.out.println("***************************");
 		Transaction t3 = new Transaction();
@@ -40,8 +38,7 @@ class Main {
 		t3.setTransactionItems(items3);
 		Receipt receipt3 = new Receipt(t3.getTransactionItems());
 		receipt3.setReceiptSubtotal();
-		receipt3.setTotalSalesTax();
-		receipt3.setTotalImportTax();
+		receipt3.setTotalTransactionTax();
 		receipt3.printReceipt();
 	}
 }
