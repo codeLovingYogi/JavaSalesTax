@@ -19,7 +19,13 @@ public class ImportItem extends TransactionItem implements TaxedItem {
 	}
 
 	public void setTaxTotal() {
+		BigDecimal amount_rounded;
+
 		this.taxTotal = this.getSubtotal().multiply(new BigDecimal(tax.getImportTax())).divide(new BigDecimal(100));
+		amount_rounded = new BigDecimal(Math.ceil(this.taxTotal.doubleValue() * 20) / 20);
+		amount_rounded.setScale(2, RoundingMode.HALF_UP);
+		this.taxTotal = amount_rounded;
+		System.out.println(this.taxTotal);
 		// BigDecimal roundedTax = this.taxTotal;
 		// //System.out.println(roundedTax);
 
