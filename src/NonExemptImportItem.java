@@ -56,10 +56,9 @@ public class NonExemptImportItem extends TransactionItem implements TaxedItem {
 		this.setImportTax();
 		this.taxTotal = this.salesTax.add(this.importTax);
 		amount_rounded = new BigDecimal(Math.ceil(this.taxTotal.doubleValue() * 20) / 20);
-		amount_rounded.setScale(2, BigDecimal.ROUND_DOWN);
+		// amount_rounded.setScale(2, RoundingMode.HALF_UP);
 		this.taxTotal = amount_rounded;
-		// System.out.println(amount_rounded);
-
+		
 		// System.out.println(this.;	
 		// System.out.println(this.getPrice());	
 		// System.out.println("import tax: " + this.importTax);		

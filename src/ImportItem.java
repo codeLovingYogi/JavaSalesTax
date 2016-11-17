@@ -24,8 +24,9 @@ public class ImportItem extends TransactionItem implements TaxedItem {
 		this.taxTotal = this.getSubtotal().multiply(new BigDecimal(tax.getImportTax())).divide(new BigDecimal(100));
 		amount_rounded = new BigDecimal(Math.ceil(this.taxTotal.doubleValue() * 20) / 20);
 		// amount_rounded = this.taxTotal.multiply(new BigDecimal(20));
+				// amount_rounded = amount_rounded.divide(new BigDecimal(20));
+
 		// amount_rounded = amount_rounded.setScale(2, RoundingMode.CEILING);
-		// amount_rounded = amount_rounded.divide(new BigDecimal(20));
 		// amount_rounded.setScale(2, RoundingMode.HALF_UP);
 		this.taxTotal = amount_rounded;
 		// System.out.println(this.taxTotal);
