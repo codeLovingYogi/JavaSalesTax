@@ -17,13 +17,11 @@ public class Receipt {
 
 	public Receipt(List<Product> items) {
 		this.items = items;
-		// System.out.println("in receipt");
 	}
 
 	public void setTotalTransactionTax() {
 		for(Product item: this.items){
 			if (item instanceof ImportItem) {
-				// ((ImportItem)item).setTaxTotal();
 				item.setTaxTotal();
 				this.totalTransactionTax = this.totalTransactionTax.add(((ImportItem)item).getTaxTotal());
 			} else if (item instanceof NonExemptItem) {
@@ -33,11 +31,7 @@ public class Receipt {
 				((NonExemptImportItem)item).setTaxTotal();
 				this.totalTransactionTax = this.totalTransactionTax.add(((NonExemptImportItem)item).getTaxTotal());
 			}
-			// item.setTaxTotal();
-			// this.totalSalesTax = this.totalSalesTax.add(item.getTaxTotal());
 		}
-		// System.out.println("sales tax total" + this.getTotalSalesTax());
-
 	}
 
 
@@ -51,41 +45,26 @@ public class Receipt {
 				((NonExemptImportItem)item).setTaxTotal();
 				this.totalSalesTax = this.totalSalesTax.add(((NonExemptImportItem)item).getTaxTotal());
 			}
-			// item.setTaxTotal();
-			// this.totalSalesTax = this.totalSalesTax.add(item.getTaxTotal());
 		}
-		// System.out.println("sales tax total" + this.getTotalSalesTax());
-
 	}
 
 	public void setTotalImportTax() {
 		for(Product item: this.items){
 			if (item instanceof ImportItem) {
-				// ((ImportItem)item).setTaxTotal();
 				item.setTaxTotal();
 				this.totalImportTax = this.totalImportTax.add(((ImportItem)item).getTaxTotal());
 			}
-			// if (item instanceof NonExemptImportItem) {
-			// 	// ((NonExemptImportItem)item).setTaxTotal();
-			// 	item.setTaxTotal();
-			// 	this.totalImportTax = this.totalImportTax.add(((NonExemptImportItem)item).getImportTax());
-			// }
 		}
-		// System.out.println("import tax total" + this.getTotalImportTax());
-
 	}
 
 	public void setReceiptSubtotal() {
-		// System.out.println("setReceiptSubtotal");
 		for(Product item: this.items){
 			((TransactionItem)item).setSubtotal();
 			this.receiptSubtotal = this.receiptSubtotal.add(((TransactionItem)item).getSubtotal());
-			// System.out.println("receipt subtotal" + this.getReceiptSubtotal());
 		}
 	}
 
 	public void printReceipt() {
-		// System.out.println("Printing receipt");
 		BigDecimal amount;
 		BigDecimal amount_rounded;
 		double centss;
@@ -93,9 +72,7 @@ public class Receipt {
 		for(Product item: this.items) {
 			if (item instanceof ImportItem) {
 				amount = ((ImportItem)item).getSubtotal().add(((ImportItem)item).getTaxTotal());
-				amount = amount.setScale(2, BigDecimal.ROUND_HALF_UP);
-				// cents = amount.setScale(4, RoundingMode.CEILING);
-				
+				amount = amount.setScale(2, BigDecimal.ROUND_HALF_UP);				
 				System.out.println(((ImportItem)item).getQuantity() + " "
 					+ item.getName() + ": "
 					+ amount);
@@ -103,16 +80,12 @@ public class Receipt {
 			else if (item instanceof NonExemptItem) {
 				amount = ((NonExemptItem)item).getSubtotal().add(((NonExemptItem)item).getTaxTotal());
 				amount = amount.setScale(2, BigDecimal.ROUND_HALF_UP);
-
-				
-				// System.out.println(amount_rounded);
 				System.out.println(((NonExemptItem)item).getQuantity() + " "
 					+ item.getName() + ": "
 					+ amount);
 			}
 			else if (item instanceof NonExemptImportItem) {
 				amount = ((NonExemptImportItem)item).getSubtotal().add(((NonExemptImportItem)item).getTaxTotal());
-
 				System.out.println(((NonExemptImportItem)item).getQuantity() + " "
 					+ item.getName() + ": "
 					+ amount);
@@ -132,27 +105,21 @@ public class Receipt {
 	}
 
 	public BigDecimal getTotalTransactionTax() {
-		// System.out.println("getReceiptSubtotal");
 		return this.totalTransactionTax;
 
 	}
 
-
 	public BigDecimal getTotalSalesTax() {
-		// System.out.println("getReceiptSubtotal");
 		return this.totalSalesTax;
 
 	}
 
 	public BigDecimal getTotalImportTax() {
-		// System.out.println("getReceiptSubtotal");
 		return this.totalImportTax;
 
 	}
 
 	public BigDecimal getReceiptSubtotal() {
-		// System.out.println("getReceiptSubtotal");
 		return this.receiptSubtotal;
-
 	}
 }

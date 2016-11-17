@@ -17,55 +17,21 @@ public class NonExemptImportItem extends TransactionItem implements TaxedItem {
 
 	public NonExemptImportItem(int quantity, String name, BigDecimal price, boolean exempt, boolean imported) {
 		super(quantity, name, price, exempt, imported);
-		// System.out.println("NonExemptImportItem created");
 	}
 
 	public void setSalesTax() {
-		// BigDecimal amount_rounded;
-		//System.out.println("Calculating import and sales tax");
 		this.salesTax = this.getSubtotal().multiply(new BigDecimal(tax.getBasicTax())).divide(new BigDecimal(100));	
-		// this.taxTotal = this.roundTotal(this.taxTotal);
-
-		// System.out.println(salesTax);
-		// amount_rounded = new BigDecimal(Math.ceil(salesTax.doubleValue() * 20) / 20);
-		// amount_rounded.setScale(2, RoundingMode.HALF_UP);
-
-		// System.out.println(amount_rounded);
-		// this.salesTax = amount_rounded
-		// BigDecimal roundedTax = this.salesTax;
-		// //System.out.println(roundedTax);
-
-		// roundedTax = roundedTax.multiply(new BigDecimal(0.05));
-		// roundedTax = roundedTax.divide(new BigDecimal(5));
-		// roundedTax = roundedTax.setScale(2, RoundingMode.CEILING);
-		// roundedTax = roundedTax.multiply(new BigDecimal(5));
-		// System.out.println("rounded: " + roundedTax);
-
-		// this.salesTax = roundedTax;
-		// System.out.println("sales tax from nei item" + this.salesTax);
-		// this.salesTax = this.salesTax.setScale(2, BigDecimal.ROUND_HALF_UP);
 	}
 
 	public void setImportTax() {
-		//System.out.println("Calculating import and sales tax");
 		this.importTax = this.getSubtotal().multiply(new BigDecimal(tax.getImportTax())).divide(new BigDecimal(100));
 	}
 
 	public void setTaxTotal() {
-		// BigDecimal amount_rounded;
-
 		this.setSalesTax();
 		this.setImportTax();
 		this.taxTotal = this.salesTax.add(this.importTax);
-		//amount_rounded = new BigDecimal(Math.ceil(this.taxTotal.doubleValue() * 20) / 20);
-		// amount_rounded.setScale(2, RoundingMode.HALF_UP);
-		this.taxTotal = this.roundTotal(this.taxTotal);
-		
-		// System.out.println(this.;	
-		// System.out.println(this.getPrice());	
-		// System.out.println("import tax: " + this.importTax);		
-		// System.out.println("sales tax: " + this.salesTax);	
-		// System.out.println("total tax: " + this.taxTotal);		
+		this.taxTotal = this.roundTotal(this.taxTotal);	
 	}
 
 	public BigDecimal getSalesTax() {

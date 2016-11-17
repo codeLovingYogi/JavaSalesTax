@@ -1,8 +1,5 @@
 import java.math.BigDecimal;
 
-public interface TaxedImportItem {
-	// BigDecimal importTax;
-	
+public interface TaxedImportItem {	
 	void setImportTax();
-
 }

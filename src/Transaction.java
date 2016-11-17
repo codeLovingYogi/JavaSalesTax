@@ -28,7 +28,6 @@ public class Transaction {
 
 	public void setTransactionItems(List<String> scannedItems) {
 		for(String item: scannedItems) {
-			//System.out.println(item);
 			int quantity;
 			boolean imported;
 			boolean exempt;
@@ -38,9 +37,7 @@ public class Transaction {
 			String[] info = item.split("\\s+");
 			quantity = Integer.parseInt(info[0]);
 
-			// System.out.println(Arrays.toString(info));
 			for (int i = 1; i < info.length; i++) {
-				//System.out.println(info[i]);
 				if(!info[i].equals("at")) {
 					getProductName.add(info[i]);
 				} else {
@@ -51,11 +48,7 @@ public class Transaction {
 			String name = String.join(" ", getProductName);
 			exempt = this.isExempt(name);
 			imported = this.isImported(name);
-			// System.out.println(quantity);
-			// System.out.println(name);
-			// System.out.println(price);
-			// System.out.println(exempt);
-			// System.out.println(imported);
+
 			if(!exempt && imported) {
 				NonExemptImportItem txnItem = new NonExemptImportItem(quantity, name, price, exempt, imported);
 				txnItem.setSubtotal();
@@ -75,8 +68,6 @@ public class Transaction {
 			}
 		}
 	}
-
-	
 
 	boolean isExempt(String name) {
 		for(String item: exemptItems) {

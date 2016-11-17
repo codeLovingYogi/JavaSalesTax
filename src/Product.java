@@ -17,7 +17,6 @@ public class Product {
 		this.price = price;
 		this.exempt = exempt;
 		this.imported = imported;
-		// System.out.println("A product has been created");
 	}
 
 	public String getName() {
