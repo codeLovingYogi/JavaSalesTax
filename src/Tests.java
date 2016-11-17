@@ -55,17 +55,13 @@ public class Tests {
 		List<Product> txnItems = testTransaction.getTransactionItems();
 		expectedAmount = new BigDecimal("67.98");
 		BigDecimal sum = new BigDecimal(0);
-		// System.out.println(testTransaction.getTransactionItems()); 
 		for(Product each: txnItems) {
 			sum = sum.add(each.getPrice());
-			// System.out.println(each.getName());
-			// System.out.println(each.getPrice());
 		}
 		if(!sum.equals(expectedAmount)) {
 			System.out.println("Failed test: Transaction, setTransactionItems, "
 				+ "Expected total: " + expectedAmount + ", Actual: " + sum);
 		}
-		// System.out.println(sum);
 	}
 
 	public static void checkProduct() {
