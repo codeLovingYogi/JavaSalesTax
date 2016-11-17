@@ -14,7 +14,7 @@ public class NonExemptItem extends TransactionItem implements TaxedItem {
 
 	public NonExemptItem(int quantity, String name, BigDecimal price, boolean exempt, boolean imported) {
 		super(quantity, name, price, exempt, imported);
-		System.out.println("NonExemptItem created");
+		// System.out.println("NonExemptItem created");
 	}
 
 	public void setTaxTotal() {
@@ -22,9 +22,9 @@ public class NonExemptItem extends TransactionItem implements TaxedItem {
 		//System.out.println("Calculating sales tax");
 		
 		this.taxTotal = this.getSubtotal().multiply(new BigDecimal(tax.getBasicTax())).divide(new BigDecimal(100));
-		System.out.println(this.getName());	
-		System.out.println(this.getPrice());		
-		System.out.println("sales tax: " + this.taxTotal);
+		// System.out.println(this.getName());	
+		// System.out.println(this.getPrice());		
+		// System.out.println("sales tax: " + this.taxTotal);
 	}
 
 	public BigDecimal getTaxTotal() {

@@ -16,7 +16,7 @@ public class NonExemptImportItem extends TransactionItem implements TaxedItem {
 
 	public NonExemptImportItem(int quantity, String name, BigDecimal price, boolean exempt, boolean imported) {
 		super(quantity, name, price, exempt, imported);
-		System.out.println("NonExemptImportItem created");
+		// System.out.println("NonExemptImportItem created");
 	}
 
 	public void setSalesTax() {
@@ -37,9 +37,9 @@ public class NonExemptImportItem extends TransactionItem implements TaxedItem {
 		this.taxTotal = this.salesTax.add(this.importTax);
 		// System.out.println(this.;	
 		// System.out.println(this.getPrice());	
-		System.out.println("import tax: " + this.importTax);		
-		System.out.println("sales tax: " + this.salesTax);	
-		System.out.println("total tax: " + this.taxTotal);		
+		// System.out.println("import tax: " + this.importTax);		
+		// System.out.println("sales tax: " + this.salesTax);	
+		// System.out.println("total tax: " + this.taxTotal);		
 	}
 
 	public BigDecimal getSalesTax() {

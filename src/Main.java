@@ -24,7 +24,7 @@ class Main {
 		//System.out.println(items);
 		t1.setTransactionItems(items);
 		//t1.printReceipt();
-		System.out.println("Printing receipt");
+		//System.out.println("Printing receipt");
 		Receipt receipt = new Receipt(t1.getTransactionItems());
 		receipt.setReceiptSubtotal();
 		receipt.setTotalSalesTax();

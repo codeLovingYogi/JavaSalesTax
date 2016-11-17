@@ -16,7 +16,7 @@ public class Receipt {
 
 	public Receipt(List<Product> items) {
 		this.items = items;
-		System.out.println("in receipt");
+		// System.out.println("in receipt");
 	}
 
 	public void setTotalSalesTax() {
@@ -32,7 +32,7 @@ public class Receipt {
 			// item.setTaxTotal();
 			// this.totalSalesTax = this.totalSalesTax.add(item.getTaxTotal());
 		}
-		System.out.println("sales tax total" + this.getTotalSalesTax());
+		// System.out.println("sales tax total" + this.getTotalSalesTax());
 
 	}
 
@@ -49,7 +49,7 @@ public class Receipt {
 				this.totalImportTax = this.totalImportTax.add(((NonExemptImportItem)item).getImportTax());
 			}
 		}
-		System.out.println("import tax total" + this.getTotalImportTax());
+		// System.out.println("import tax total" + this.getTotalImportTax());
 
 	}
 
@@ -58,12 +58,12 @@ public class Receipt {
 		for(Product item: this.items){
 			((TransactionItem)item).setSubtotal();
 			this.receiptSubtotal = this.receiptSubtotal.add(((TransactionItem)item).getSubtotal());
-			System.out.println("receipt subtotal" + this.getReceiptSubtotal());
+			// System.out.println("receipt subtotal" + this.getReceiptSubtotal());
 		}
 	}
 
 	public void printReceipt() {
-		System.out.println("Printing receipt");
+		// System.out.println("Printing receipt");
 		BigDecimal amount;
 		BigDecimal amount_rounded;
 		double centss;
