@@ -15,6 +15,19 @@ public class TransactionItem extends Product {
 		this.quantity = quantity;
 	}
 
+	public BigDecimal roundTotal(BigDecimal totalAmount) {
+		BigDecimal amount_rounded;
+		amount_rounded = new BigDecimal(Math.ceil(totalAmount.doubleValue() * 20) / 20);
+		return amount_rounded;
+		// amount_rounded = new BigDecimal(Math.ceil(this.taxTotal.doubleValue() * 20) / 20);
+		// amount_rounded = this.taxTotal.multiply(new BigDecimal(20));
+				// amount_rounded = amount_rounded.divide(new BigDecimal(20));
+
+		// amount_rounded = amount_rounded.setScale(2, RoundingMode.CEILING);
+		// amount_rounded.setScale(2, RoundingMode.HALF_UP);
+
+	}
+
 	public void setQuantity(int quantity) {
 		this.quantity = quantity;
 	}

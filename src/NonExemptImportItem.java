@@ -24,6 +24,8 @@ public class NonExemptImportItem extends TransactionItem implements TaxedItem {
 		// BigDecimal amount_rounded;
 		//System.out.println("Calculating import and sales tax");
 		this.salesTax = this.getSubtotal().multiply(new BigDecimal(tax.getBasicTax())).divide(new BigDecimal(100));	
+		// this.taxTotal = this.roundTotal(this.taxTotal);
+
 		// System.out.println(salesTax);
 		// amount_rounded = new BigDecimal(Math.ceil(salesTax.doubleValue() * 20) / 20);
 		// amount_rounded.setScale(2, RoundingMode.HALF_UP);
@@ -50,14 +52,14 @@ public class NonExemptImportItem extends TransactionItem implements TaxedItem {
 	}
 
 	public void setTaxTotal() {
-		BigDecimal amount_rounded;
+		// BigDecimal amount_rounded;
 
 		this.setSalesTax();
 		this.setImportTax();
 		this.taxTotal = this.salesTax.add(this.importTax);
-		amount_rounded = new BigDecimal(Math.ceil(this.taxTotal.doubleValue() * 20) / 20);
+		//amount_rounded = new BigDecimal(Math.ceil(this.taxTotal.doubleValue() * 20) / 20);
 		// amount_rounded.setScale(2, RoundingMode.HALF_UP);
-		this.taxTotal = amount_rounded;
+		this.taxTotal = this.roundTotal(this.taxTotal);
 		
 		// System.out.println(this.;	
 		// System.out.println(this.getPrice());	
