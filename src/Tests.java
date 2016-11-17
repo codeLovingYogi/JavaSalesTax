@@ -16,7 +16,7 @@ public class Tests {
 		// 1 bottle of perfume at 18.99
 		// 1 packet of headache pills at 9.75
 		// 1 box of imported chocolates at 11.25
-		String file = "Input3.txt";
+		String file = "../Input/Input3.txt";
 		Transaction testTransaction = new Transaction();
 		
 		List<String> scanned = testTransaction.scanItems(file);
@@ -70,7 +70,7 @@ public class Tests {
 
 	public static void checkProduct() {
 		String expectedString;
-		BigDecimal expectedPrice;
+		BigDecimal expectedAmount;
 		// Product:
 		// 1 imported bottle of perfume: 54.65
 		Product testProduct = new Product("imported bottle of perfume", new BigDecimal("54.65"), false, true);
@@ -79,10 +79,10 @@ public class Tests {
 			System.out.println("Failed test: Product, getName, "
 				+ "Expected: " + expectedString + ", Actual: " + testProduct.getName());
 		}
-		expectedPrice = new BigDecimal("54.65");
-		if(!testProduct.getPrice().equals(expectedPrice)) {
+		expectedAmount = new BigDecimal("54.65");
+		if(!testProduct.getPrice().equals(expectedAmount)) {
 			System.out.println("Failed test: Product, getPrice, "
-				+ "Expected: " + expectedPrice + ", Actual: " + testProduct.getPrice());
+				+ "Expected: " + expectedAmount + ", Actual: " + testProduct.getPrice());
 		}
 	}
 
@@ -101,6 +101,43 @@ public class Tests {
 		if(!testTxnItem.getName().equals(expectedString)) {
 			System.out.println("Failed test: TransactionItem, getName, "
 				+ "Expected: " + expectedString + ", Actual: " + testTxnItem.getName());
+		}
+	}
+
+	public static void checkTaxRates() {
+		double expectedValue;
+
+		TaxRates testTaxRates = new TaxRates();
+		testTaxRates.setBasicTax(8);
+		expectedValue = 8;
+		if(testTaxRates.getBasicTax() != (expectedValue)) {
+			System.out.println("Failed test: TaxRates, getBasicTax, "
+				+ "Expected: " + expectedValue + ", Actual: " + testTaxRates.getBasicTax());
+		}
+
+		testTaxRates.setImportTax(15);
+		expectedValue = 15;
+		if(testTaxRates.getImportTax() != (expectedValue)) {
+			System.out.println("Failed test: TaxRates, getImportTax, "
+				+ "Expected: " + expectedValue + ", Actual: " + testTaxRates.getImportTax());
+		}
+	}
+
+	public static void checkReceipt() {
+		List<Product> testItems = new ArrayList<Product>();
+		BigDecimal expectedAmount;
+
+		ImportItem testTxnItem2 = new ImportItem(1, "imported box of chocolates", new BigDecimal("10.00"), true, true);
+		NonExemptImportItem testTxnItem3 = new NonExemptImportItem(1, "imported bottle of perfume", new BigDecimal("47.50"), false, true);
+		testItems.add(testTxnItem2);
+		testItems.add(testTxnItem3);
+
+		Receipt testReceipt = new Receipt(testItems);
+		//testReceipt.printReceipt();
+		expectedAmount = new BigDecimal(0);		// Expected zero unless we run printReceipt()
+		if(!testReceipt.getReceiptSubtotal().equals(expectedAmount)) {
+			System.out.println("Failed test: Receipt, getReceiptSubtotal, "
+				+ "Expected: " + expectedAmount + ", Actual: " + testReceipt.getReceiptSubtotal());
 		}
 	}
 }

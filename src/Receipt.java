@@ -15,44 +15,14 @@ public class Receipt {
 		this.items = items;
 	}
 
-	public void setTotalTransactionTax() {
+	private void setTotalTransactionTax() {
 		for(Product item: this.items){
-			if (item instanceof ImportItem) {
-				item.setTaxTotal();
-				this.totalTransactionTax = this.totalTransactionTax.add(((ImportItem)item).getTaxTotal());
-			} else if (item instanceof NonExemptItem) {
-				((NonExemptItem)item).setTaxTotal();
-				this.totalTransactionTax = this.totalTransactionTax.add(((NonExemptItem)item).getTaxTotal());
-			} else if (item instanceof NonExemptImportItem) {
-				((NonExemptImportItem)item).setTaxTotal();
-				this.totalTransactionTax = this.totalTransactionTax.add(((NonExemptImportItem)item).getTaxTotal());
-			}
+			item.setTaxTotal();
+			this.totalTransactionTax = this.totalTransactionTax.add(item.getTaxTotal());
 		}
 	}
 
-	public void setTotalSalesTax() {
-		for(Product item: this.items){
-			if (item instanceof NonExemptItem) {
-				((NonExemptItem)item).setTaxTotal();
-				this.totalSalesTax = this.totalSalesTax.add(((NonExemptItem)item).getTaxTotal());
-			}
-			if (item instanceof NonExemptImportItem) {
-				((NonExemptImportItem)item).setTaxTotal();
-				this.totalSalesTax = this.totalSalesTax.add(((NonExemptImportItem)item).getTaxTotal());
-			}
-		}
-	}
-
-	public void setTotalImportTax() {
-		for(Product item: this.items){
-			if (item instanceof ImportItem) {
-				item.setTaxTotal();
-				this.totalImportTax = this.totalImportTax.add(((ImportItem)item).getTaxTotal());
-			}
-		}
-	}
-
-	public void setReceiptSubtotal() {
+	private void setReceiptSubtotal() {
 		for(Product item: this.items){
 			((TransactionItem)item).setSubtotal();
 			this.receiptSubtotal = this.receiptSubtotal.add(((TransactionItem)item).getSubtotal());
@@ -61,29 +31,27 @@ public class Receipt {
 
 	public void printReceipt() {
 		BigDecimal amount;
-		BigDecimal amount_rounded;
-		double centss;
-
+		BigDecimal salesTax;
+		BigDecimal total;
+		
 		this.setReceiptSubtotal();
 		this.setTotalTransactionTax();
 
 		for(Product item: this.items) {
 			if (item instanceof ImportItem) {
-				amount = ((ImportItem)item).getSubtotal().add(((ImportItem)item).getTaxTotal());
-				amount = amount.setScale(2, BigDecimal.ROUND_HALF_UP);				
+				amount = ((ImportItem)item).getSubtotal().add(item.getTaxTotal());
 				System.out.println(((ImportItem)item).getQuantity() + " "
 					+ item.getName() + ": "
 					+ amount);
 			}
 			else if (item instanceof NonExemptItem) {
-				amount = ((NonExemptItem)item).getSubtotal().add(((NonExemptItem)item).getTaxTotal());
-				amount = amount.setScale(2, BigDecimal.ROUND_HALF_UP);
+				amount = ((NonExemptItem)item).getSubtotal().add(item.getTaxTotal());
 				System.out.println(((NonExemptItem)item).getQuantity() + " "
 					+ item.getName() + ": "
 					+ amount);
 			}
 			else if (item instanceof NonExemptImportItem) {
-				amount = ((NonExemptImportItem)item).getSubtotal().add(((NonExemptImportItem)item).getTaxTotal());
+				amount = ((NonExemptImportItem)item).getSubtotal().add(item.getTaxTotal());
 				System.out.println(((NonExemptImportItem)item).getQuantity() + " "
 					+ item.getName() + ": "
 					+ amount);
@@ -94,27 +62,19 @@ public class Receipt {
 					+ ((TransactionItem)item).getSubtotal());;
 			}
 		}
-		BigDecimal salesTax = this.getTotalTransactionTax();
-		salesTax = salesTax.setScale(2, BigDecimal.ROUND_HALF_UP);
+		salesTax = roundTotal(this.getTotalTransactionTax());
 		System.out.println("Sales Taxes: " + salesTax);
-		BigDecimal total = this.getTotalTransactionTax().add(this.getReceiptSubtotal());
-		total = total.setScale(2, BigDecimal.ROUND_HALF_UP);
+		total = roundTotal(this.getTotalTransactionTax().add(this.getReceiptSubtotal()));
 		System.out.println("Total: " + total);
+	}
+
+	BigDecimal roundTotal(BigDecimal amount) {
+		BigDecimal amount_rounded;
+		return amount.setScale(2, BigDecimal.ROUND_HALF_UP);
 	}
 
 	public BigDecimal getTotalTransactionTax() {
 		return this.totalTransactionTax;
-
-	}
-
-	public BigDecimal getTotalSalesTax() {
-		return this.totalSalesTax;
-
-	}
-
-	public BigDecimal getTotalImportTax() {
-		return this.totalImportTax;
-
 	}
 
 	public BigDecimal getReceiptSubtotal() {

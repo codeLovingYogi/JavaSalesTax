@@ -12,7 +12,6 @@ public class NonExemptItem extends TransactionItem implements TaxedSalesItem {
 
 	public void setSalesTax() {
 		this.salesTax = this.getSubtotal().multiply(new BigDecimal(tax.getBasicTax())).divide(new BigDecimal(100));
-
 	};
 
 	public void setTaxTotal() {
