@@ -27,7 +27,7 @@ public class Receipt {
 			}
 			if (item instanceof NonExemptImportItem) {
 				((NonExemptImportItem)item).setTaxTotal();
-				this.totalSalesTax = this.totalSalesTax.add(((NonExemptImportItem)item).getSalesTax());
+				this.totalSalesTax = this.totalSalesTax.add(((NonExemptImportItem)item).getTaxTotal());
 			}
 			// item.setTaxTotal();
 			// this.totalSalesTax = this.totalSalesTax.add(item.getTaxTotal());
@@ -43,11 +43,11 @@ public class Receipt {
 				item.setTaxTotal();
 				this.totalImportTax = this.totalImportTax.add(((ImportItem)item).getTaxTotal());
 			}
-			if (item instanceof NonExemptImportItem) {
-				// ((NonExemptImportItem)item).setTaxTotal();
-				item.setTaxTotal();
-				this.totalImportTax = this.totalImportTax.add(((NonExemptImportItem)item).getImportTax());
-			}
+			// if (item instanceof NonExemptImportItem) {
+			// 	// ((NonExemptImportItem)item).setTaxTotal();
+			// 	item.setTaxTotal();
+			// 	this.totalImportTax = this.totalImportTax.add(((NonExemptImportItem)item).getImportTax());
+			// }
 		}
 		// System.out.println("import tax total" + this.getTotalImportTax());
 
@@ -82,12 +82,7 @@ public class Receipt {
 				amount = ((NonExemptItem)item).getSubtotal().add(((NonExemptItem)item).getTaxTotal());
 				amount = amount.setScale(2, BigDecimal.ROUND_HALF_UP);
 
-				// amount_rounded = amount.multiply(new BigDecimal(0.05));
-				// amount_rounded = amount_rounded.divide(new BigDecimal(5));
-				// amount_rounded = amount_rounded.setScale(2, RoundingMode.CEILING);
-				// amount_rounded = amount_rounded.multiply(new BigDecimal(5));
-				// amount_rounded = amount_rounded.add(((NonExemptItem)item).getSubtotal());
-
+				
 				// System.out.println(amount_rounded);
 				System.out.println(((NonExemptItem)item).getQuantity() + " "
 					+ item.getName() + ": "
