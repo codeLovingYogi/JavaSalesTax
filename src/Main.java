@@ -1,10 +1,5 @@
-import java.util.Scanner;
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.List;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.math.BigDecimal;
 
 class Main {
 	public static void main (String[] args) throws FileNotFoundException {

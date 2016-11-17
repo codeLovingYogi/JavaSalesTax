@@ -1,11 +1,4 @@
-import java.util.Scanner;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.util.List;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 
 public class ImportItem extends TransactionItem implements TaxedItem {
 
