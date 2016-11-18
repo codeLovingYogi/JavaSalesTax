@@ -1,15 +1,28 @@
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
+/**
+ * The TransactionItem class is derived from the Product class. 
+ *
+ * It allows for the tracking of the quantity of a product and the subtotal 
+ * in a transaction.
+ */
+
 public class TransactionItem extends Product {
 	private int quantity;
 	private BigDecimal subtotal;
-
+	
+	/**
+     * Child class of Product to track transaction specific information
+     */
 	public TransactionItem(int quantity, String name, BigDecimal price, boolean exempt, boolean imported) {
 		super(name, price, exempt, imported);
 		this.quantity = quantity;
 	}
 
+	/**
+     * The roundTotal method rounds BigDecimal values to the nearest $0.05.
+     */
 	public BigDecimal roundTotal(BigDecimal totalAmount) {
 		BigDecimal amount_rounded;
 

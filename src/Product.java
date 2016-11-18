@@ -1,5 +1,10 @@
 import java.math.BigDecimal;
 
+/**
+ * The Product is a parent class tracking key information for any product including 
+ * the name, price, exempt and import status. 
+ */
+
 public class Product {
 	private String name;
 	private BigDecimal price;
@@ -20,7 +25,7 @@ public class Product {
 	public BigDecimal getPrice() {
 		return this.price;
 	}
-
+	
 	public void setTaxTotal() {}
 
 	public BigDecimal getTaxTotal() {

@@ -1,6 +1,19 @@
 import java.io.FileNotFoundException;
 import java.util.List;
 
+/**
+ * The Main class contains the main() method to launch the program.
+ * 
+ * It initiates the following:
+ *
+ * 1. Runs tests on classes in the program.
+ * 2. Creation of a transaction
+ * 3. Scans a list of transaction items by reading from an input .txt file. 
+ *
+ * Input files for the requested three cases are stored in the JavaSalesTax/Input 
+ * folder.
+ */
+
 class Main {
 	public static void main (String[] args) throws FileNotFoundException {
 		// Run tests:

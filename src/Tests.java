@@ -4,6 +4,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.math.BigDecimal;
 
+/**
+ * The Tests class is used for the testing of classes in the program.
+ */
+
 public class Tests {
 	public static void checkTransaction() throws FileNotFoundException {
 		List<String> expectedItems;
