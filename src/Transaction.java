@@ -1,10 +1,11 @@
-import java.util.Scanner;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.List;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.math.BigDecimal;
+import java.util.List;
+import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.Scanner;
+
 
 /**
  * The Transaction class handles the scanning items from a transaction
@@ -23,7 +24,7 @@ public class Transaction {
 					Arrays.asList("book", "chocolate", "pills"));
 
 	/**
-     * The scanItems methods reads transaction items from an input file.
+     * The scanItems method reads transaction items from an input file.
      */
 	public static List<String> scanItems(String file) throws FileNotFoundException {
 		List<String> scannedItems = new ArrayList<String>();

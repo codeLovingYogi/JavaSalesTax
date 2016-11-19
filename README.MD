@@ -18,6 +18,6 @@ java Main
 ```
 or
 ```
-java -jar appl.jar
+java -jar SalesTax.jar
 ```
 

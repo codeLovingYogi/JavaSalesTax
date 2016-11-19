@@ -1,4 +1,6 @@
+import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -7,47 +9,66 @@ import java.util.List;
  * It initiates the following:
  *
  * 1. Runs tests on classes in the program.
- * 2. Creation of a transaction
- * 3. Scans a list of transaction items by reading from an input .txt file. 
+ * 2. Get files from input directory
+ * 3. Loop through each file in directory
+ * 4. Creation of a transaction
+ * 5. Scans a list of transaction items by reading from an input .txt file. 
  *
  * Input files for the requested three cases are stored in the JavaSalesTax/Input 
  * folder.
  */
 
 class Main {
+	/**
+     * The main method starts the program.
+     */
 	public static void main (String[] args) throws FileNotFoundException {
+		final String directory = "../input/";
+		final File folder = new File(directory);
+		List<String> files = new ArrayList<String>();
+
 		// Run tests:
-		System.out.println("*****Running tests*****");
+		System.out.println("*******Running tests*******");
 		Tests.checkTransaction();
 		Tests.checkProduct();
 		Tests.checkTransactionItem();
 		Tests.checkTaxRates();
 		Tests.checkReceipt();
 
-		// Run main functionality:
-		String file = "../Input/Input1.txt";
-		Transaction t1 = new Transaction();
-		List<String> items = t1.scanItems(file);
-		t1.setTransactionItems(items);
-		System.out.println("*****Printing receipt for Input 1:*****");
-		Receipt receipt1 = new Receipt(t1.getTransactionItems());
-		receipt1.printReceipt();
-		
-		String file2 = "../Input/Input2.txt";
-		Transaction t2 = new Transaction();
-		List<String> items2 = t2.scanItems(file2);
-		t2.setTransactionItems(items2);
-		System.out.println("*****Printing receipt for Input 2:*****");
-		Receipt receipt2 = new Receipt(t2.getTransactionItems());
-		receipt2.printReceipt();
+		// Get files from input directory
+		files = getFilesFromDirectory(folder);
 
-		String file3 = "../Input/Input3.txt";
-		Transaction t3 = new Transaction();
-		List<String> items3 = t3.scanItems(file3);
-		t3.setTransactionItems(items3);
-		System.out.println("*****Printing receipt for Input 3:*****");
-		Receipt receipt3 = new Receipt(t3.getTransactionItems());
-		receipt3.printReceipt();
+		// Loop through each file in input folder
+		for (String file: files) {
+			String path = "";
+			path = directory + file;
+			// Create transaction for each file
+			Transaction t = new Transaction();
+			List<String> items = t.scanItems(path);
+			t.setTransactionItems(items);
+			// Print receipt for transaction
+			System.out.println("*****Printing receipt for " + file + "*****");
+			Receipt receipt = new Receipt(t.getTransactionItems());
+			receipt.printReceipt();
+		}
+	}
+
+	/**
+     * The getFilesFromDirectory method reads files from a directory.
+     */
+	public static List<String> getFilesFromDirectory(final File folder) {
+		List<String> files = new ArrayList<String>();
+		
+		System.out.println("Files found in input directory:");
+		for (final File file: folder.listFiles()) {
+			if (file.isDirectory()) {
+				getFilesFromDirectory(file);
+			} else {
+				System.out.println(file.getName());
+				files.add(file.getName());
+			}
+		}
+		return files;
 	}
 }
 

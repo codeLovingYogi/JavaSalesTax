@@ -1,8 +1,8 @@
 import java.io.FileNotFoundException;
-import java.util.List;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.math.BigDecimal;
+import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * The Tests class is used for the testing of classes in the program.
